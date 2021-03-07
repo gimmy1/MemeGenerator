@@ -20,7 +20,6 @@ class MemeEngine:
     def load(self, image):
         if image.endswith(self.allowed_extensions):
             return Image.open(image)
-        
         raise UnidentifiedImageError("Unsupported FileType")
 
     def resize_image(self, max_width=500):
