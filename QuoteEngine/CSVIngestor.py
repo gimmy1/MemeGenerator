@@ -1,4 +1,4 @@
-import csv
+import pandas
 
 from typing import List
 
@@ -13,10 +13,10 @@ class CSVIngestor(IngestorInterface):
     def parse(cls, path: str) -> List[QuoteModel]:
         try:
             csv_model = []
-            with open(path, "r") as infile:
-                reader = csv.DictReader(infile)
-                for elem in reader:
-                    csv_model.append(QuoteModel(elem.get("body"), elem.get("author")))
+            df = pandas.read_csv(path)
+            
+            for _, row in df.iterrows():
+                csv_model.append(QuoteModel(row["body"], row["author"]))
         except:
             raise Exception("Unsupported filetype")
         else:

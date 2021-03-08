@@ -16,6 +16,7 @@ class MemeEngine:
         if not os.path.exists(directory):
             os.makedirs(directory)
         self.image = None
+        self.height = None
 
     def load(self, image):
         if image.endswith(self.allowed_extensions):
@@ -31,8 +32,8 @@ class MemeEngine:
         
         width, height = self.image.size
         ratio = max_width / float(width)
-        adjusted_height = int(height * ratio)
-        return self.image.thumbnail((adjusted_height, width))
+        self.height = int(height * ratio)
+        self.image.thumbnail((self.height, width))
 
     @staticmethod
     def create_filename(directory):
@@ -45,10 +46,11 @@ class MemeEngine:
         """
         Add a quote to the image as text
         """
+        position = random.choice(range(15, self.height - 25))
         draw = ImageDraw.Draw(self.image)
-        font = ImageFont.truetype("./_data/comicate/COMICATE.TTF", 30)
-        draw.text((50, 50), f"* {body} *", font=font, fill="black")
-        draw.text((55, 30), f"Author: {author}", font=font, fill="white")
+        font = ImageFont.truetype("./_data/comicate/COMICATE.TTF", 20)
+        draw.text((50, position), f"* {body} *", font=font, fill="black")
+        draw.text((55, position + 20), f"Author: {author}", font=font, fill="white")
 
     def make_meme(self, image, body, author, width=500):
         """
