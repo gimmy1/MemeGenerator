@@ -1,6 +1,8 @@
 import os
 import random
+import textwrap
 import uuid
+import pdb
 
 from PIL import Image, ImageDraw, ImageFont
 from PIL import UnidentifiedImageError
@@ -17,23 +19,23 @@ class MemeEngine:
             os.makedirs(directory)
         self.image = None
         self.height = None
+        self.width = None
 
     def load(self, image):
         if image.endswith(self.allowed_extensions):
             return Image.open(image)
-        raise UnidentifiedImageError("Unsupported FileType")
+        raise UnidentifiedImageError("Please provide a jpg")
 
     def resize_image(self, max_width=500):
         """
         Proportionally resize the image
         """
-        if max_width > 500:
-            max_width = 500
+        max_width = 500
         
-        width, height = self.image.size
-        ratio = max_width / float(width)
+        self.width, height = self.image.size
+        ratio = max_width / float(self.width)
         self.height = int(height * ratio)
-        self.image.thumbnail((self.height, width))
+        self.image.thumbnail((self.height, 500))
 
     @staticmethod
     def create_filename(directory):
@@ -46,11 +48,11 @@ class MemeEngine:
         """
         Add a quote to the image as text
         """
-        position = random.choice(range(15, self.height - 25))
         draw = ImageDraw.Draw(self.image)
         font = ImageFont.truetype("./_data/comicate/COMICATE.TTF", 20)
-        draw.text((50, position), f"* {body} *", font=font, fill="black")
-        draw.text((55, position + 20), f"Author: {author}", font=font, fill="white")
+        position = random.choice(range(15, self.height - 50))
+        value = "\n".join(textwrap.wrap(f"{body} - Author: {author}", width=30))
+        draw.text((10, position), value, font=font, fill="white")
 
     def make_meme(self, image, body, author, width=500):
         """

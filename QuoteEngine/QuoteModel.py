@@ -1,10 +1,7 @@
-from dataclasses import dataclass
-
-@dataclass
 class QuoteModel:
-    """ A Quotemodel class """
-    body: str
-    author: str
+    def __init__(self, body, author):
+        self.body = body
+        self.author = author
 
     def __repr__(self):
         return f"QuoteModel: '{self.body}' - {self.author}"
