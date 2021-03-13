@@ -47,6 +47,7 @@ class MemeEngine:
     def add_quote(self, body, author):
         """
         Add a quote to the image as text
+        Reference: https://stackoverflow.com/questions/8257147/wrap-text-in-pil
         """
         draw = ImageDraw.Draw(self.image)
         font = ImageFont.truetype("./_data/comicate/COMICATE.TTF", 20)
